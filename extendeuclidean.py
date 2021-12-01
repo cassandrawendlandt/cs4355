@@ -63,7 +63,6 @@ if __name__ == '__main__':
             if (gcd != 1):
                 print("The multiplicative inverse cannot be found")
             else:
-                print('The GCD is', gcd)
                 c,d=mod_inverse(a,b,x,y)
                 print ("c =",a,"^-1 mod", b," =",c)
                 print ("d =",b,"^-1 mod", a," =",d)
