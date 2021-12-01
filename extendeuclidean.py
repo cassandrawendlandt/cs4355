@@ -1,7 +1,7 @@
 """
 Final Project Question 1a
-Cassandra Wendlandt-Bloodsworth
-3551770
+Name: Cassandra Wendlandt-Bloodsworth
+StudentNumber: 3551770
 """
 import sys
 def gcd_calculation(a, b):
@@ -21,10 +21,9 @@ def gcd_calculation(a, b):
         return b, 0, 1
     else:
         gcd, x, y = gcd_calculation(b % a, a)
-        print (gcd,b%a,a)
         return gcd, y - (b // a) * x, x
  
-def modInverse(a,b,x,y):
+def mod_inverse(a,b,x,y):
     """modInverse finds the inverse of the 
 
     Args:
@@ -65,6 +64,6 @@ if __name__ == '__main__':
                 print("The multiplicative inverse cannot be found")
             else:
                 print('The GCD is', gcd)
-                c,d=modInverse(a,b,x,y)
+                c,d=mod_inverse(a,b,x,y)
                 print ("c =",a,"^-1 mod", b," =",c)
                 print ("d =",b,"^-1 mod", a," =",d)
