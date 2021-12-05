@@ -193,7 +193,7 @@ public class rsaEncDec extends JFrame implements ActionListener {
 
 			
 	}
-
+    
 	public void actionPerformed (ActionEvent e){
         if (e.getSource() == primeNumberGen){
             int num = 0;
@@ -217,9 +217,9 @@ public class rsaEncDec extends JFrame implements ActionListener {
                 status.setText("Need to Generate p and q value");
             }
             else{
-                double p  = Double.parseDouble(ptTextField.getText());
-                double q  = Double.parseDouble(qTextField.getText());
-                double n = p*q;
+                Long p  = Long.parseLong(ptTextField.getText());
+                Long q  = Long.parseLong(qTextField.getText());
+                Long n = p*q;
                 nTextField.setText(n+"");
             }
             
@@ -253,7 +253,6 @@ public class rsaEncDec extends JFrame implements ActionListener {
                 }
                 else {
                     int pq = (p-1)*(q-1);
-                    System.out.println(pq);
                     int d = mod(eValue,pq);
                     if (d== -1){
                         dField.setText("D could not be caculated, choose another e");
@@ -261,17 +260,26 @@ public class rsaEncDec extends JFrame implements ActionListener {
                     else{
                         dField.setText(""+d);
                     }
-                    
-                    
                 }
-                
-
             }
         }
+        //add checks
         if (e.getSource() == encButton){
-            status.setText("enc clicked");
+            int m =  Integer.parseInt(mField.getText());
+            int eValue =  Integer.parseInt(eArea.getText());
+            Long n =  Long.parseLong(nTextField.getText());
+            double c = Math.pow(m,eValue)%n;
+            int c2 = (int)c;
+            cField.setText(c2+"");
         }
+        //add checks
         if (e.getSource() == decButton){
+            int c =  Integer.parseInt(cField.getText());
+            int d =  Integer.parseInt(dField.getText());
+            Long n =  Long.parseLong(nTextField.getText());
+            double m = (long)Math.pow(c,d)%n;
+
+            decField.setText(m+"");
             status.setText("dec clicked");
         }
 	}
