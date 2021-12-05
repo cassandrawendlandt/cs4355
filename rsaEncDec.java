@@ -1,6 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.Random; 
 //import java.text.NumberFormat;
 /** @author Cassandra Wendlandt 3551700
 */
@@ -26,6 +27,18 @@ public class rsaEncDec extends JFrame implements ActionListener {
     private JButton dCalButton;
     private JTextField dField;
 
+    private JLabel mLabel; 
+    private JTextField mField;
+
+    private JLabel cJLabel;
+    private JLabel cJLabel2;
+    private JTextField cField;
+    private JButton encButton; 
+
+
+    private JLabel dJLabel;
+    private JLabel dJLabel2;
+    private JButton decButton; 
     private JLabel status;
 	
 		
@@ -129,6 +142,54 @@ public class rsaEncDec extends JFrame implements ActionListener {
         contentPane.add(dCalButton,gc);
 
 
+        mLabel = new JLabel("5. Input message m         m=");
+        mField = new JTextField(10);
+        gc.gridx=0;
+        gc.gridy=8;
+        contentPane.add(mLabel,gc);
+        gc.gridx=1;
+        gc.gridy=8;
+        contentPane.add(mField,gc);
+
+        cJLabel = new JLabel("6. Encrypt c=m^e mod n");
+        cField = new JTextField(20);
+        cJLabel2 = new JLabel("c=");
+        encButton = new JButton("Enc");
+        encButton.addActionListener(this);
+        gc.gridx=0;
+        gc.gridy=9;
+        contentPane.add(cJLabel,gc);
+        gc.gridx=1;
+        gc.gridy=9;
+        contentPane.add(encButton,gc);
+        gc.gridx=2;
+        gc.gridy=9;
+        contentPane.add(cJLabel2,gc);
+        gc.gridx=3;
+        gc.gridy=9;
+        contentPane.add(cField,gc);
+
+        dJLabel = new JLabel("7. Decrypt m=c^d mod n");
+        dField = new JTextField(20);
+        dJLabel2 = new JLabel("m=");
+        decButton = new JButton("Dec");
+        decButton.addActionListener(this);
+        gc.gridx=0;
+        gc.gridy=10;
+        contentPane.add(dJLabel,gc);
+        gc.gridx=1;
+        gc.gridy=10;
+        contentPane.add(decButton,gc);
+        gc.gridx=2;
+        gc.gridy=10;
+        contentPane.add(dJLabel2,gc);
+        gc.gridx=3;
+        gc.gridy=10;
+        contentPane.add(dField,gc);
+        
+
+
+
 			
 	}
 
@@ -144,14 +205,43 @@ public class rsaEncDec extends JFrame implements ActionListener {
 
 		
 		if (e.getSource() == primeNumberGen){
-            System.out.println("x");
             status.setText ("Invalid grade - GPA not changed.");
+            int num = 0;
+            Random rand = new Random(); // generate a random number
+            num = rand.nextInt(5000) +1000;
+
+            while (!isPrime(num)) {          
+                num = rand.nextInt(5000) +1000;
+            }
+            ptTextField.setText(num + "");
+            num = rand.nextInt(5000) +1000;
+
+            while (!isPrime(num)) {          
+                num = rand.nextInt(5000) +1000;
+            }
+
+            qTextField.setText(num + "");
         }
         if (e.getSource()==nComButton){
-            status.setText("Com clicked");
+            if (qTextField.getText().length()==0 || ptTextField.getText().length()==0){
+                status.setText("Need to Generate p and q value");
+            }
+            else{
+                double p  = Double.parseDouble(ptTextField.getText());
+                double q  = Double.parseDouble(qTextField.getText());
+                double n = p*q;
+                nTextField.setText(n+"");
+            }
+            
         }
         if (e.getSource()==dCalButton){
             status.setText("cal clicked");
+        }
+        if (e.getSource() == encButton){
+            status.setText("enc clicked");
+        }
+        if (e.getSource() == decButton){
+            status.setText("dec clicked");
         }
        
 		
@@ -160,6 +250,18 @@ public class rsaEncDec extends JFrame implements ActionListener {
 		
 		
 	}
+
+    public static boolean isPrime(int num){
+        for(int i=2; i<num; i++) {
+         if(num%i == 0)
+         {
+            return false;
+         }
+      }
+      
+      return true;
+   }
+    
 	public static void main (String[] args) {
 		new rsaEncDec ().setVisible (true);
 	}
