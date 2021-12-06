@@ -38,6 +38,12 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
     private JLabel c2Label;
     private JTextField c2Field;
 
+    private JLabel dec; 
+    private JLabel calculationJLabel;
+    private JLabel answer;
+    private JButton decButton;
+    private JTextField decField;
+
     public ElGamalEncDec(){
         setSize(450,600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -130,6 +136,56 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
         contentPane.add (c1TextField,gc);
 
 
+        c2TitlLabel = new JLabel("4.3 Computer c2=m*y^r mod p");
+        gc.gridx=0;
+        gc.gridy=8;
+        contentPane.add (c2TitlLabel,gc);
+
+        c2Button = new JButton("Com");
+        c2Button.addActionListener(this);
+        gc.gridx=1;
+        gc.gridy=8;
+        contentPane.add (c2Button,gc);
+
+        c2Label = new JLabel("c2=");
+        gc.gridx=2;
+        gc.gridy=8;
+        contentPane.add (c2Label,gc);
+
+        c2Field = new JTextField(10);
+        gc.gridx=3;
+        gc.gridy=8;
+        contentPane.add (c2Field,gc);
+
+
+        dec = new JLabel("5. Decrypt c= (c1,c2)"); 
+        gc.gridx=0;
+        gc.gridy=9;
+        contentPane.add (dec,gc);
+    
+        calculationJLabel = new JLabel("m=c2/c1 ^x mod p");
+        gc.gridx=0;
+        gc.gridy=10;
+        contentPane.add (calculationJLabel,gc);
+
+        answer = new JLabel("m=");
+        gc.gridx=2;
+        gc.gridy=10;
+        contentPane.add (answer,gc);
+
+        decButton = new JButton("Dec");
+        decButton.addActionListener(this);
+        gc.gridx=1;
+        gc.gridy=10;
+        contentPane.add (decButton,gc);
+
+        decField = new JTextField(10);
+        gc.gridx=3;
+        gc.gridy=10;
+        contentPane.add (decField,gc);
+
+
+
 
 
 
@@ -146,7 +202,27 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
 
         if (e.getSource()==c1Button){
             double r = Double.parseDouble(rField.getText());
-            
+            double c = Math.pow(g,r)%p;
+            c1TextField.setText(c+"");  
+        }
+
+        if (e.getSource() == c2Button){
+            double m = Double.parseDouble(mField.getText());
+            double y = Double.parseDouble(yField.getText());
+            double r = Double.parseDouble(rField.getText());
+
+            double c2 = (m*(Math.pow(y,r)))%p;
+            c2Field.setText(c2+"");
+        }
+
+        if (e.getSource() == decButton){
+            double c2 = Double.parseDouble(c2Field.getText());
+            double c1 = Double.parseDouble(c1TextField.getText());
+            double x = Double.parseDouble(xField.getText());
+
+            double m = (c2/Math.pow(c1, x))%p;
+
+            decField.setText(m+"");
         }
 
     }

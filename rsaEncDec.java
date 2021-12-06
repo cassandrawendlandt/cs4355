@@ -54,7 +54,7 @@ public class rsaEncDec extends JFrame implements ActionListener {
 
 		primeNumberLabel = new JLabel("1. Generate primes p and q" );
         JLabel primeNumberLabel2 = new JLabel ("1000<p,q<5000");
-        status = new JLabel("Nothing is clicked"); 
+        status = new JLabel(""); 
 
         p = new JLabel ("p=");
         ptTextField = new JTextField (20);
@@ -307,7 +307,7 @@ public class rsaEncDec extends JFrame implements ActionListener {
     }
     return x;
 }
-public static int gcd(int r, int s) {
+   public static int gcd(int r, int s) {
     while (s != 0) {
        int t = s;
        s = r % s;
