@@ -2,11 +2,14 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.Random; 
-//import java.text.NumberFormat;
-/** @author Cassandra Wendlandt 3551700
+
+/**
+ * Final Project 1c: RSA Encryption/Decryption 
+ *  @author Cassandra Wendlandt 3551700
 */
 public class rsaEncDec extends JFrame implements ActionListener {
 
+    //creating the varibales needed for the program
     private JLabel primeNumberLabel;
     private JLabel p;
     private JLabel q;
@@ -40,21 +43,27 @@ public class rsaEncDec extends JFrame implements ActionListener {
     private JLabel decJLabel2;
     private JButton decButton; 
     private JTextField decField;
-    private JLabel status;
-	
 		
 	public rsaEncDec () {
-			
-		setSize (750,600);
+        //setting the size and properites of the frame
+		setSize (750,300);
         setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
         setTitle("RSA Encryption/Decryption");
+        //creating the content pane
         Container contentPane = getContentPane ();
+        //setting the layouts
 		contentPane.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
-
+        //initialzing and placing the contents for the UI
 		primeNumberLabel = new JLabel("1. Generate primes p and q" );
+        gc.gridx=0;
+        gc.gridy=0;
+        contentPane.add (primeNumberLabel,gc);
+
         JLabel primeNumberLabel2 = new JLabel ("1000<p,q<5000");
-        status = new JLabel(""); 
+        gc.gridx=2;
+        gc.gridy=0;
+        contentPane.add (primeNumberLabel2,gc);
 
         p = new JLabel ("p=");
         ptTextField = new JTextField (20);
@@ -62,18 +71,11 @@ public class rsaEncDec extends JFrame implements ActionListener {
         qTextField = new JTextField (20);
         primeNumberGen = new JButton("Gen");
         primeNumberGen.addActionListener(this);
-         gc.gridx=0;
-         gc.gridy=0;
-         contentPane.add (primeNumberLabel,gc);
-         gc.gridx=1;
-         gc.gridy=0;
-         contentPane.add(primeNumberGen,gc);
-         gc.gridx=2;
-         gc.gridy=0;
-         contentPane.add (primeNumberLabel2,gc);
-         gc.gridx=3;
-         gc.gridy=0;
-         contentPane.add(status,gc);
+        gc.gridx=1;
+        gc.gridy=0;
+        contentPane.add(primeNumberGen,gc);
+         
+        
          gc.gridx=0;
          gc.gridy=1;
          contentPane.add(p,gc);
@@ -82,7 +84,6 @@ public class rsaEncDec extends JFrame implements ActionListener {
          contentPane.add(ptTextField,gc);
          gc.gridx=0;
          gc.gridy=2;
-         //gc.fill = GridBagConstraints.NONE;
          contentPane.add (q,gc);
          gc.gridx=1;
          gc.gridy=2;
@@ -187,80 +188,59 @@ public class rsaEncDec extends JFrame implements ActionListener {
         gc.gridx=3;
         gc.gridy=10;
         contentPane.add(decField,gc);
-        
-
-
-
-			
-	}
+	}//end of rsaEncDec()
     
+    //action listener to complete the calaculations when the buttons are clicked
 	public void actionPerformed (ActionEvent e){
+        //generates two random numbers that are prime
         if (e.getSource() == primeNumberGen){
             int num = 0;
             Random rand = new Random(); // generate a random number
             num = rand.nextInt(4000) +1000;
-
+            //loops until finds a number that is a prime
             while (!isPrime(num)) {          
                 num = rand.nextInt(4000) +1000;
-            }
+            }//end of while
+            //sets the prime number to the p field value
             ptTextField.setText(num + "");
             num = rand.nextInt(4000) +1000;
-
+            //loops until finds a number that is prime
             while (!isPrime(num)) {          
                 num = rand.nextInt(4000) +1000;
-            }
-
+            }//end of while
+            //assigns the prime number to the q field
             qTextField.setText(num + "");
-        }
+        }//end of if
+        //finds the n value given p and q
         if (e.getSource()==nComButton){
-            if (qTextField.getText().length()==0 || ptTextField.getText().length()==0){
-                status.setText("Need to Generate p and q value");
-            }
-            else{
-                Long p  = Long.parseLong(ptTextField.getText());
-                Long q  = Long.parseLong(qTextField.getText());
-                Long n = p*q;
-                nTextField.setText(n+"");
-            }
-            
-        }
+            //gets the value from the p field
+            Long p  = Long.parseLong(ptTextField.getText());
+            //getst eh value from the q field
+            Long q  = Long.parseLong(qTextField.getText());
+            //calcualtes the n vlaue 
+            Long n = p*q;
+            //sets n value to the field
+            nTextField.setText(n+"");
+        }//end of if 
+        //calculates the value of d
         if (e.getSource()==dCalButton){
+            //initially set the values 
             int eValue=-1;
             int p=0;
             int q=0; 
-            try {
-                eValue = Integer.parseInt(eArea.getText());
-            }
-            catch(Exception excep){
-                status.setText("enter a numerical value into e");
-            }
-            try {
-                p = Integer.parseInt(ptTextField.getText());
-                q = Integer.parseInt(qTextField.getText());
-                
-            }
-            catch(Exception excep){
-                status.setText("error");
-
-            }
-            if (eValue == -1){
-                status.setText("enter a numerical value into e");
+            //get the values from the fields 
+            eValue = Integer.parseInt(eArea.getText());
+            p = Integer.parseInt(ptTextField.getText());
+            q = Integer.parseInt(qTextField.getText());
+            int pq = (p-1)*(q-1);
+            //calcualte the mod inverse of e because ed= 1 mod(p-1)(q-1)
+            int d = mod(eValue,pq);
+            //if d is equal to -1 that means there wasn't a gcd vlaue 
+            if (d== -1){
+                dField.setText("D could not be caculated, choose another e");
             }
             else{
-                //status.setText("e "+eValue);
-                if (p == 0 || q == 0){
-                    status.setText("Generate the p and q values");
-                }
-                else {
-                    int pq = (p-1)*(q-1);
-                    int d = mod(eValue,pq);
-                    if (d== -1){
-                        dField.setText("D could not be caculated, choose another e");
-                    }
-                    else{
-                        dField.setText(""+d);
-                    }
-                }
+                dField.setText(""+d);
             }
         }
         //add checks
@@ -280,10 +260,9 @@ public class rsaEncDec extends JFrame implements ActionListener {
             double m = (long)Math.pow(c,d)%n;
 
             decField.setText(m+"");
-            status.setText("dec clicked");
         }
 	}
-
+    //method checks to see if number passed in is prime 
     public static boolean isPrime(int num){
         for(int i=2; i<num; i++) {
          if(num%i == 0)
@@ -293,8 +272,9 @@ public class rsaEncDec extends JFrame implements ActionListener {
       }
       
       return true;
-   }
+    }//end of is prime
     
+    //calcuates the mod value of numbers passed in 
    public static int mod(int a, int m) {
     if (gcd(a,m) != 1) {
         return -1;

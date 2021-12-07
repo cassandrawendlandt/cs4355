@@ -1,9 +1,12 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-
+/**
+ * Final Project 1c: Diffie Hellman Key Exchange 
+ *  @author Cassandra Wendlandt 3551700
+*/
 public class DiffieHellman extends JFrame implements ActionListener {
-
+    //creates the varibles that will be used throught the project
     private JLabel state0;
 
     private int p = 65537;
@@ -38,12 +41,16 @@ public class DiffieHellman extends JFrame implements ActionListener {
 
 
     public DiffieHellman(){
-        setSize(800,300);
+        //setting the size and properites of the frame
+        setSize(750,275);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Diffie-Hellman Key Exchange");
+        //creating the content pane
         Container contentPane = getContentPane ();
+        //Setting the layout
 		contentPane.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
+         //initializing and placings the contents for the UI
         int p = 65537;
         int g = 3;
         state0 = new JLabel("0. Given a large prime p=" + p + " a primary root g="+ g);
@@ -102,7 +109,6 @@ public class DiffieHellman extends JFrame implements ActionListener {
         gc.gridy=6;
         contentPane.add (yField,gc);
 
-
         yJLabel2 = new JLabel("4. Compute Y=g^y mod p");
         gc.gridx=0;
         gc.gridy=7;
@@ -160,38 +166,51 @@ public class DiffieHellman extends JFrame implements ActionListener {
         gc.gridy=10;
         contentPane.add (kButton2,gc);
         kButton2.addActionListener(this);
+    }//end of DiffieHallman()
 
-        
-    }
-
+    //action listener to complete the calcualtions when the buttons are clicked
     public void actionPerformed (ActionEvent e){
+        //calcualtes X=g^x mod p
         if (e.getSource()==xButton){
+            //gets the vlaoue forom the x field 
             int x = Integer.parseInt(xField.getText());
+            //calcalates the value of big x
             double X = Math.pow(g,x)%p;
+            //sets the values to the x field 
             xField2.setText(""+X);
-        }
-
+        }//end of if for x button
+        //calcualtes the value for Y=g^y mod p
         if (e.getSource() == yButton){
+            //gets the vlaues form the y field
             int y = Integer.parseInt(yField.getText());
+            //calcualtes the value of Y
             double Y = Math.pow(g,y)%p;
+            //sets the value to the y field
             yField2.setText(""+Y);
-        }
-
+        }//end of if for the y button 
+        //calculates the value for K = Y^x mod p
         if (e.getSource()==kButton){
+            //gets the values from the y field
             double Y = Double.parseDouble(yField2.getText());
+            //gets the values from the x field 
             int x = Integer.parseInt(xField.getText());
+            //calculates the k value
             double k = Math.pow(Y,x)%p;
+            //adds the value to the k field 
             kField.setText(""+k);
-        }
-
+        }//end of the if for the first k button
+        //calculates the value for k= x^y mod p
         if (e.getSource()==kButton2){
+            //gets the value from the x field
             double X = Double.parseDouble(xField2.getText());
+            //gets the vlaue from the y field
             int y = Integer.parseInt(yField.getText());
+            //calculates the k value
             double k = Math.pow(X,y)%p;
+            //adds the value to the k field 
             kField2.setText(""+k);
-        }
-
-    }
+        }//end of if for the second k button
+    }//end of actionPerformed class 
 
     public static void main (String[] args){
         new DiffieHellman().setVisible(true);

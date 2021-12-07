@@ -1,8 +1,6 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-
-//
 /**
  * Final Project 1c: ElGamal Encryption/ Decryption 
  *  @author Cassandra Wendlandt 3551700
@@ -60,7 +58,6 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
         GridBagConstraints gc = new GridBagConstraints();
         
         //initializing and placings the contents for the UI
-
         state1 = new JLabel("0. Given a large prime p=" + p + " a primary root g="+ g);
         gc.gridx=0;
         gc.gridy=0;
@@ -142,7 +139,6 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
         gc.gridx=3;
         gc.gridy=7;
         contentPane.add (c1TextField,gc);
-
 
         c2TitlLabel = new JLabel("4.3 Computer c2=m*y^r mod p");
         gc.gridx=0;
