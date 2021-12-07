@@ -1,13 +1,15 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
-import java.util.Random; 
-//import java.text.NumberFormat;
-/** @author Cassandra Wendlandt 3551700
+
+//
+/**
+ * Final Project 1c: ElGamal Encryption/ Decryption 
+ *  @author Cassandra Wendlandt 3551700
 */
 public class ElGamalEncDec extends JFrame implements ActionListener {
     
-    //variables 
+    //creating the varibles needed for the program variables 
     private JLabel state1; 
 
     private JLabel xLabel;
@@ -45,14 +47,20 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
     private JTextField decField;
 
     public ElGamalEncDec(){
-        setSize(450,600);
+        //setting the size and properites of the frame
+        setSize(600,300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("ElGamal Encryption/Decryption");
+
+        //creating the content pane
         Container contentPane = getContentPane ();
+
+        //setting the layouts
 		contentPane.setLayout(new GridBagLayout());
         GridBagConstraints gc = new GridBagConstraints();
-        int p = 65537;
-        int g = 3;
+        
+        //initializing and placings the contents for the UI
+
         state1 = new JLabel("0. Given a large prime p=" + p + " a primary root g="+ g);
         gc.gridx=0;
         gc.gridy=0;
@@ -157,7 +165,6 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
         gc.gridy=8;
         contentPane.add (c2Field,gc);
 
-
         dec = new JLabel("5. Decrypt c= (c1,c2)"); 
         gc.gridx=0;
         gc.gridy=9;
@@ -183,49 +190,55 @@ public class ElGamalEncDec extends JFrame implements ActionListener {
         gc.gridx=3;
         gc.gridy=10;
         contentPane.add (decField,gc);
+    } //end of ElGamalEncDec()
 
-
-
-
-
-
-
-    }
-
+    //action listener to complete the calcualtions when the buttons are clicked
     public void actionPerformed (ActionEvent e){
+        //calculates y= g^x mod p
         if (e.getSource() == yButton){
+            //gets the values from the x field 
             double x = Double.parseDouble(xField.getText());
-            
+            //calcualtes y
             double y = Math.pow(g,x)%p;
+            //sets the vlaue to the y field 
             yField.setText(y+"");
-        }
-
+        }//end of yButton if
+        //calculates c1= g^r mod p
         if (e.getSource()==c1Button){
+            //gets the r value from the r field
             double r = Double.parseDouble(rField.getText());
+            //calculates the values
             double c = Math.pow(g,r)%p;
+            //sets the values to the c1 field
             c1TextField.setText(c+"");  
-        }
-
+        }//end of c1 button check
+        //calculates the value of c2=m*y^r mod p
         if (e.getSource() == c2Button){
+            //gets the m value from the m field 
             double m = Double.parseDouble(mField.getText());
+            //gets the y value from the y field
             double y = Double.parseDouble(yField.getText());
+            //gets the r values from the r field
             double r = Double.parseDouble(rField.getText());
-
+            //calculates the value
             double c2 = (m*(Math.pow(y,r)))%p;
+            //set the value to the c2 field 
             c2Field.setText(c2+"");
-        }
-
+        }//end of if for the c2 button
+        //calculates the decrypt value
         if (e.getSource() == decButton){
+            //gets the c2 value from its field
             double c2 = Double.parseDouble(c2Field.getText());
+            //gets the c1 value from its field
             double c1 = Double.parseDouble(c1TextField.getText());
+            //gets the x value from its field 
             double x = Double.parseDouble(xField.getText());
-
+            //calculates the m value
             double m = (c2/Math.pow(c1, x))%p;
-
+            //sets the value to m the decField 
             decField.setText(m+"");
-        }
-
-    }
+        }//end of 
+    }//end of action performed
 
     public static void main (String[] args){
         new ElGamalEncDec().setVisible(true);
