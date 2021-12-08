@@ -29,5 +29,4 @@ to run this first complie the java code javac DiffieHellman.java
 then call it by java DiffieHellman
 
 ## Question 2
-## Question 3
-## Question 4
+To execute vignere.py you must run `python vignere.py`
